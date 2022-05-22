@@ -17,8 +17,8 @@ function addText() {
   });
 
   rl.question('Привет! Введите текст для записи:  ', (str) => {
-    if (str.trim() === 'exit') return exit();
-    newText += ` ${str}`;
+    if (str.toLowerCase().trim() === 'exit') return exit();
+    newText += `\n${str}`;
     fs.writeFile(path.join(__dirname, 'text.txt'), newText, (err) => {
       if (err) return console.error(err.message); 
     });

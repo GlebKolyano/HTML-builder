@@ -15,8 +15,8 @@ async function readFiles() {
         const extension = path.extname(file.name).substring(1);
         const size = await fs.stat(path.join(__dirname, 'secret-folder', file.name));
 
-        const fileSizeInKb = (size.size * 0.00098);
-        const str = '```' + `${name} - ${extension} - ${fileSizeInKb}` + 'kb```';
+        const fileSizeInKb = size.size * 0.00098;
+        const str = `${name} - ${extension} - ${fileSizeInKb}kb`;
         console.log(str);
       }
   } catch (err) {
