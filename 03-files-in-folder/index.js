@@ -1,25 +1,22 @@
+const readdir = require('fs/promises');
+const fs = require('fs');
 const path = require('path');
-const fs = require('fs').promises;
-const readdir = fs.readdir;
+const { stdout } = require('process');
 
 
-readFiles();
+const getInfoFile = (file) => {
+  const fileInfo = path.join(__dirname, 'secret-folder', file.name);
 
-async function readFiles() {
-  try {
-    const files = await readdir(path.join(__dirname, 'secret-folder'), {withFileTypes: true});
-    console.log('\x1b[33m%s\x1b[0m', 'Если значения не такие как у вас, обратите внимание, что конвертация в kb!');
-    for (const file of files)
-      if (file.isFile()) {
-        const name = file.name.toString().split('.')[0];
-        const extension = path.extname(file.name).substring(1);
-        const size = await fs.stat(path.join(__dirname, 'secret-folder', file.name));
+  fs.stat(fileInfo, (err, stats) => {
+    if (stats.isFile()) {stdout.write(`${path.parse(fileInfo).name} - ${path.extname(fileInfo).slice(1)} - ${stats.size * 0.00098}kb \n`);}
+  });
+};
 
-        const fileSizeInKb = size.size * 0.00098;
-        const str = `${name} - ${extension} - ${fileSizeInKb}kb`;
-        console.log(str);
-      }
-  } catch (err) {
-    console.error(err);
-  }
-}
+
+const dir = path.join(__dirname, 'secret-folder');
+
+fs.readdir(dir, {withFileTypes: true}, (err, files) => {
+  files.forEach(file => {
+    getInfoFile(file);
+  });
+});

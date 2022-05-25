@@ -35,10 +35,8 @@ async function copyAssets(from, to) {
     let fileCopy = await fsPromises.lstat(path.join(to, file));
     if (!assetsFiles.includes(file)) {
       if (fileCopy.isFile()) {
-        console.log('is File');
-        // fsPromises.unlink(path.join(to, file));
+        fsPromises.unlink(path.join(to, file));
       } else {
-        console.log('is Folder');
         await deleteFolder(to, file);
       }
       
